@@ -1,0 +1,12 @@
+*/.env
+*.env
+
+*/data
+*data
+
+stack.txt
+
+*/mlruns
+*mlruns
+
+venv
