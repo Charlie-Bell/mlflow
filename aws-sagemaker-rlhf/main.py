@@ -18,20 +18,20 @@ role = os.environ.get("ROLE")
 s3_dir = os.environ.get("S3_DIR")
 subnet = os.environ.get("SUBNET")
 security_group_id = os.environ.get("SECURITY_GROUP_ID")
-experiment_name = "experiment-2"
+experiment_name = "dolly-v2-rlhf"
 
 # Create estimator
-DATASET_DIR = "s3://untapped-transformer-models/amazon_qa_dataset/closed_dataset/"
-#MODEL_DIR = "s3://untapped-transformer-models/models/base/dolly-v2-12b/"
+DATASET_DIR = ""
+MODEL_DIR = "s3://untapped-transformer-models/models/trained/dolly-v2-12b/"
 TRAIN_PATH = DATASET_DIR + "train"
 VALIDATION_PATH = DATASET_DIR + "validation"
-OUTPUT_DIR = "s3://untapped-transformer-models/models/trained/gpt-2-mlflow/"
+OUTPUT_DIR = "s3://untapped-transformer-models/models/trained/dolly-v2-12b-rlhf/"
 ROLE = role
 
 # Set arguments
 hyperparameters={
     'SAGEMAKER_SUBMIT_DIRECTORY': OUTPUT_DIR,
-    #'input_model_dir': MODEL_DIR,
+    'input_model_dir': MODEL_DIR,
     "tracking_uri": tracking_uri,
     "experiment_name": experiment_name,
     "s3_dir": s3_dir,
@@ -40,7 +40,7 @@ hyperparameters={
 huggingface_estimator = HuggingFace(
     entry_point="train.py",                 # fine-tuning script to use in training job
     source_dir="./src",                # directory where fine-tuning script is stored
-    instance_type="ml.g5.xlarge",          # instance type
+    instance_type="ml.g5.4xlarge",          # instance type
     instance_count=1,                       # number of instances
     role=ROLE,                              # IAM role used in training job to acccess AWS resources (S3)
     transformers_version="4.28",             # Transformers version
